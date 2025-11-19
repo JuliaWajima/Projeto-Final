@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+        <h2>Seu espaço de cuidado<br>começa aqui.</h2>
+        <p>
+            Bem-vindo(a) de volta! Continue sua<br> jornada em direção ao equilíbrio e bem-estar.<br> Estamos felizes em ver você.
+        </p>
+
+        <div class="form-wrapper">
+            <h3>Login</h3>
+            
+            <form method="POST" action="{{ url_for('homepage') }}" novalidate>
+                {{ form.hidden_tag() }} 
+
+                <div class="form-group">
+                    {{ form.email.label }}
+                    {{ form.email(class="form-control") }}
+                    {% for error in form.email.errors %}
+                        <span class="errors">{{ error }}</span>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    {{ form.senha.label }}
+                    {{ form.senha(class="form-control") }}
+                    {% for error in form.senha.errors %}
+                        <span class="errors">{{ error }}</span>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    {{ form.btnSubmit(class="btn") }}
+                </div>
+            </form>
+            <p>Novo por aqui? <a href="{{ url_for('cadastro') }}">Crie sua conta</a>.</p>
+        </div>
+
+{% endblock %}

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bem Vindo - AJS</title>
+    <style>
+        /* === RESET BÁSICO === */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth; /* Deixa a rolagem suave */
+        }
+
+        body {
+            font-family: 'Arial', sans-serif; /* Fonte limpa */
+            color: #333;
+            overflow-x: hidden; /* Evita rolagem lateral indesejada */
+        }
+
+        /* === NAVBAR (MENU) === */
+        header {
+            position: fixed; /* Fica fixo no topo enquanto rola */
+            top: 0;
+            width: 100%;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #EFEBE2; /* Mesma cor do fundo inicial */
+            border-bottom: 1px solid #A5A5A5;
+            z-index: 1000;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #666;
+            margin-right: 30px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-links a:hover {
+            color: #000;
+        }
+
+        /* === SEÇÃO 1: HERO (Bem Vindo) === */
+        .section-hero {
+            background-color: #EFEBE2; /* Bege Claro */
+            height: 100vh; /* 100% da altura da tela */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding-top: 60px; /* Compensar o menu fixo */
+        }
+
+        .hero-title {
+            font-size: 5rem;
+            font-weight: 800;
+            color: #6B7A65; /* Verde Musgo Escuro */
+            margin-bottom: 10px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            font-weight: 300;
+        }
+
+        /* === LAYOUT DIVIDIDO (Split Screen) === */
+        .split-section {
+            display: flex;
+            min-height: 100vh; /* Cada seção ocupa pelo menos uma tela inteira */
+            width: 100%;
+        }
+
+        /* Lados da divisão */
+        .half {
+            flex: 1; /* Cada lado ocupa 50% */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 60px;
+        }
+
+        /* === SEÇÃO 2: COMO FUNCIONA (Verde) === */
+        /* Lado Esquerdo: Imagem Folhas */
+        .bg-leaves {
+            /* Substitua pela URL da sua imagem de folhas */
+            background-image: url("{{ url_for('static', filename='img/Verde.png') }}");
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Lado Direito: Texto Verde Escuro */
+        .bg-dark-green {
+            background-color: #9DAD9D; /* Verde Acinzentado */
+            color: #fff;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr; /* Coluna da esq menor, dir maior */
+            gap: 40px;
+        }
+
+        .bg-dark-green h2 {
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .feature-box h3 {
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            margin-top: 20px;
+            font-weight: 800;
+        }
+        
+        .feature-box p {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: #f0f0f0;
+        }
+
+        /* === SEÇÃO 3: BENEFÍCIOS (Roxo) === */
+        /* Lado Esquerdo: Texto Roxo */
+        .bg-purple {
+            background-color: #b3a9cc; /* Lilás/Roxo claro */
+            color: #fff;
+        }
+
+        .bg-purple h2 {
+            font-size: 3rem;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+        }
+
+        .bg-purple p {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+
+        /* Lado Direito: Imagem Lavanda */
+        .bg-lavender {
+            /* Substitua pela URL da sua imagem de lavanda */
+            background-image: url("{{ url_for('static', filename='img/Lavanda_1.png') }}");
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* === RESPONSIVIDADE (Celular) === */
+        @media (max-width: 768px) {
+            .hero-title { font-size: 3rem; }
+            
+            .split-section {
+                flex-direction: column; /* Empilha um em cima do outro no celular */
+            }
+            
+            .half {
+                min-height: 50vh; /* No celular, cada metade ocupa meia tela */
+                padding: 40px;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr; /* Texto fica em uma coluna só */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav class="nav-links">
+            <a href="#">Início</a>
+            {% if current_user.is_authenticated %}
+                <a href="#">Diário</a>
+                <a href="#">Lembretes</a>
+        </nav>
+        <div class="nav-links">
+            {% if current_user.is_authenticated %}
+                <li><a href="#">Recursos</a></li> <li><a href="{{ url_for('logout') }}">Sair</a></li>
+            {% else %}
+                <li><a href="{{ url_for('cadastro') }}">Cadastre</a></li>
+            {% endif %}
+        </div>
+    </header>
+
+    <section class="section-hero">
+        <h1 class="hero-title">Bem vindo!</h1>
+        <p class="hero-subtitle">Adicione diários e lembretes para ver as estatísticas</p>
+    </section>
+
+    <section class="split-section">
+        <div class="half bg-leaves"></div>
+        
+        <div class="half bg-dark-green">
+            <div class="content-grid">
+                <div>
+                    <h2>Como<br>Funciona</h2>
+                    <p>Neste site você possui 3 tipos de ferramentas:</p>
+                    <br>
+                    <ol style="list-style-position: inside;">
+                        <li>Diário;</li>
+                        <li>Lembretes;</li>
+                        <li>Estatísticas.</li>
+                    </ol>
+                </div>
+                <div>
+                    <div class="feature-box">
+                        <h3>Diário.</h3>
+                        <p>No diário você pode criar anotações descrevendo seu dia, sentimentos, frustrações, ou até mesmo registrar suas reflexões.</p>
+                    </div>
+                    <div class="feature-box">
+                        <h3>Lembretes.</h3>
+                        <p>Nesta ferramenta você pode adicionar lembretes e metas de hábitos saudáveis e definir uma frequência.</p>
+                    </div>
+                    <div class="feature-box">
+                        <h3>Estatísticas.</h3>
+                        <p>Na área localizada acima será seu espaço de resumo geral, nele você pode ver todas as informações.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="split-section">
+        <div class="half bg-purple">
+            <h2>Benefícios</h2>
+            <p>O site AJS foi criado com o objetivo de promover o bem-estar mental e emocional por meio de ferramentas simples e acessíveis. Ele oferece um diário online onde o usuário pode registrar seus pensamentos.</p>
+            <p>Além disso, o AJS conta com lembretes de hábitos saudáveis, incentivando práticas que melhoram a qualidade de vida, como beber água, fazer pausas e praticar exercícios.</p>
+            <p>Com uma interface simples e acolhedora, o AJS busca ser um espaço pessoal e seguro, onde cada pessoa pode cuidar de si.</p>
+        </div>
+        
+        <div class="half bg-lavender"></div>
+    </section>
+
+</body>
+</html>
