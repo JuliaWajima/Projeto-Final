@@ -183,15 +183,14 @@
     <header>
         <nav class="nav-links">
             <a href="#">Início</a>
-            {% if current_user.is_authenticated %}
-                <a href="#">Diário</a>
-                <a href="#">Lembretes</a>
+            <a href="#">Diário</a>
+            <a href="#">Lembretes</a>
         </nav>
         <div class="nav-links">
             {% if current_user.is_authenticated %}
                 <li><a href="#">Recursos</a></li> <li><a href="{{ url_for('logout') }}">Sair</a></li>
             {% else %}
-                <li><a href="{{ url_for('cadastro') }}">Cadastre</a></li>
+                <li><a href="{{ url_for('cadastro') }}">Cadastrar</a></li>
             {% endif %}
         </div>
     </header>

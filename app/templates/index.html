@@ -1,39 +1,217 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <style>
+        /* 1. Estilos de Corpo e Fundo para SOBRESCREVER o base.html */
+        body {
+            /* O !important garante que o body de tela cheia funcione apesar do base.html */
+            background-color: #fdfdfd !important; 
+            /* GARANTA QUE ESTE CAMINHO ESTEJA CORRETO! */
+            background-image: url("{{ url_for('static', filename='img/Lavanda_3.png') }}") !important; 
+            background-size: cover !important;
+            background-position: center !important;
+            min-height: 100vh !important;
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: center !important; 
+            align-items: center !important; 
+            color: white !important; 
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4) !important; 
+        }
 
-        <h2>Seu espaço de cuidado<br>começa aqui.</h2>
-        <p>
-            Bem-vindo(a) de volta! Continue sua<br> jornada em direção ao equilíbrio e bem-estar.<br> Estamos felizes em ver você.
-        </p>
+        /* 2. Ocultar a navegação do base.html (menu) */
+        nav {
+            display: none !important;
+        }
 
-        <div class="form-wrapper">
-            <h3>Login</h3>
+        /* 3. Área de Texto/Mensagem (Esquerda - Login) */
+        .message-area {
+            position: absolute;
+            top: 50%;
+            left: 10%;
+            transform: translateY(-50%);
+            width: 40%;
+            max-width: 500px;
+            text-align: left;
+            padding: 20px;
+        }
+
+        .message-area h2 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            color: white; 
+            font-weight: 500;
+        }
+
+        .message-area p {
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: white;
+            font-weight: 300;
+        }
+
+        /* 4. Formulário e Wrapper (Direita - Login) */
+        .form-wrapper {
+            background-color: rgba(255, 255, 255, 0.2); /* Fundo semi-transparente */
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 350px;
+            text-align: center;
+            position: absolute; 
+            top: 50%;
+            right: 10%;
+            transform: translateY(-50%);
+        }
+
+        .form-wrapper h3 {
+            font-size: 1.8em;
+            margin-bottom: 30px;
+            color: white; 
+            font-weight: 500;
+            text-align: left;
+        }
+        
+        /* 5. Estilos de Input e Botões */
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 1em;
+            color: white; 
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.5); 
+            color: #333;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+        
+        /* Link Esqueceu a senha */
+        .forgot-password {
+             margin-bottom: 20px;
+             text-align: right;
+        }
+        .forgot-password a {
+            font-size: 0.9em;
+            color: white;
+            text-decoration: none;
+        }
+        
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 15px;
+            transition: background-color 0.3s;
+        }
+
+        /* Botão "Entrar" (Verde/Verde Oliva) */
+        .btn-login {
+            background-color: #8fa08e; /* Cor do botão 'Entrar' */
+            color: white;
+        }
+        
+        .btn-login:hover {
+            background-color: #798a78;
+        }
+
+        /* Botão "Não tem conta? Clique aqui" (Roxo) */
+        .btn-register-link {
+            background-color: #9b72a8; /* Cor do botão de 'Cadastro' */
+            color: white;
+            padding: 12px; /* Adiciona padding para parecer um botão */
+            border-radius: 5px;
+            margin-top: 10px;
+            text-decoration: none; /* Para usar como link */
+            display: block; /* Garante que o link ocupe toda a largura */
+            font-weight: bold;
+        }
+        
+        .btn-register-link:hover {
+            background-color: #8a6496;
+        }
+
+        /* Botão "retornar" */
+        .btn-back {
+            background: none;
+            border: 1px solid white;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            position: absolute;
+            bottom: 30px;
+            left: 10%;
+            transform: none;
+            width: 150px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .btn-back:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+    </style>
+
+    <div class="message-area">
+        <h2>Seu espaço de cuidado começa aqui.</h2>
+        <p>Bem-vindo(a) de volta! Continue sua jornada em direção ao equilíbrio e bem-estar. Estamos felizes em ver você.</p>
+        <a href="{{ url_for('homepage') }}" class="btn-back">retornar</a> 
+    </div>
+
+    <div class="form-wrapper">
+        <h3>Login</h3>
+        
+        <form method="POST" action="{{ url_for('homepage') }}" novalidate>
+            {{ form.hidden_tag() }} 
+
+            <div class="form-group">
+                {{ form.email.label }}
+                {{ form.email(class="form-control") }}
+                {% for error in form.email.errors %}
+                    <span class="errors">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="form-group">
+                {{ form.senha.label }}
+                {{ form.senha(class="form-control") }}
+                {% for error in form.senha.errors %}
+                    <span class="errors">{{ error }}</span>
+                {% endfor %}
+            </div>
             
-            <form method="POST" action="{{ url_for('homepage') }}" novalidate>
-                {{ form.hidden_tag() }} 
+            <p class="forgot-password">
+                <a href="#">Esqueceu a senha?</a>
+            </p>
 
-                <div class="form-group">
-                    {{ form.email.label }}
-                    {{ form.email(class="form-control") }}
-                    {% for error in form.email.errors %}
-                        <span class="errors">{{ error }}</span>
-                    {% endfor %}
-                </div>
-
-                <div class="form-group">
-                    {{ form.senha.label }}
-                    {{ form.senha(class="form-control") }}
-                    {% for error in form.senha.errors %}
-                        <span class="errors">{{ error }}</span>
-                    {% endfor %}
-                </div>
-
-                <div class="form-group">
-                    {{ form.btnSubmit(class="btn") }}
-                </div>
-            </form>
-            <p>Novo por aqui? <a href="{{ url_for('cadastro') }}">Crie sua conta</a>.</p>
-        </div>
+            <div class="form-group">
+                {{ form.btnSubmit(class="btn btn-login") }} 
+            </div>
+            
+        </form>
+        
+        <a href="{{ url_for('cadastro') }}" class="btn-register-link">
+            Não tem conta? Clique aqui
+        </a>
+    </div>
 
 {% endblock %}
